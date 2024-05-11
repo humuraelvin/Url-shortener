@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="url"], input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3e8e41;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+
+    
+        <form action="/shorten" method="POST">
+            <div>
+                <label for="longUrl">Long URL:</label>
+                <input type="url" id="longUrl" name="longUrl" required>
+            </div>
+            <button type="submit">Shorten</button>
+        </form>
+        <br><br>
+        <form action="/history" method="GET">
+            <button type="submit">History</button>
+        </form>
+    
+       
+    
+
+    <% if (isHistory && allShortenedUrlsBythisUser.length > 0) { %>
+        <h2>History</h2>
+        <ul>
+            <% allShortenedUrlsBythisUser.forEach(function(url) { %>
+                <li>
+                    <a href="<%= url.long_url %>" target="_blank"><%= url.short_id %></a>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
+</body>
+</html>

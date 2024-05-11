@@ -1,10 +1,21 @@
-const shortid = require('shortid'); 
+const shortid = require('shortid');
 const dbconnection = require('../utils/dbconn');
+const Joi = require('joi');
 
 const shortenUrl = async (req, res) => {
     try {
-        const { longUrl, userId } = req.body;
+        const { longUrl } = req.body;
+        const userId = req.userId;
         const shortId = shortid.generate();
+
+        const schema = Joi.object({
+            longUrl: Joi.string().uri().required(),
+        });
+        const { error } = schema.validate(req.body);
+        if (error) {
+            res.status(400).json({ error: error.details[0].message });
+            return;
+        }
 
         const sql = 'INSERT INTO shortened_urls (short_id, long_url, user_id) VALUES (?, ?, ?)';
         await dbconnection.query(sql, [shortId, longUrl, userId], (err, result) => {
@@ -22,13 +33,14 @@ const shortenUrl = async (req, res) => {
 
 const getHistory = async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const userId = req.userId;
         const sql = 'SELECT * FROM shortened_urls WHERE user_id = ?';
         await dbconnection.query(sql, [userId], (err, results) => {
             if (err) {
                 res.status(404).json({ error: err.message });
             } else {
-                res.status(200).json({ success: true, allShortenedUrlsBythisUser: results })
+                // res.status(200).json({ success: true, allShortenedUrlsBythisUser: results })
+                res.render("view", { isHistory: true, allShortenedUrlsBythisUser:results})
             }
         });
     } catch (error) {
