@@ -18,7 +18,7 @@ This is a URL shortener application built with Node.js and MySQL.
 
 4. Start the application:npmstart
 5. 
-5. Access the application in your browser at `http://localhost:3000`.
+5. Access the application in your browser at `http://localhost:3030`.
 
 ## Usage
 
